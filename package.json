@@ -1,0 +1,13 @@
+{
+    "name": "SHPS4Node-commandline",
+    "version": "1.0.0",
+    "description": "Advanced REPL used by SHPS",
+    "author": "Marco Alka <me@marco-alka.de>",
+    "main": "index-commandline.js",
+    "dependencies": {
+        "colors": ">=0.6.0 < 2",
+        "node-mod-load": "^2.1.0",
+        "q": "^1.2.0",
+        "node-app-terminal": "^0.1.0"
+    }
+}
