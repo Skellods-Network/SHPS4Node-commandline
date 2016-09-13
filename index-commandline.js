@@ -152,7 +152,15 @@ me.on('line', function ($line) {
 
         case 'config': {
 
+            var printUsage = me.write.bind(this, 'Usage: config gen <type> <filename>\n\nWith type:\n - database\n - master\n - vhost');
             if (tokens[1] === 'gen') {
+
+                //TODO: check available template files
+                if (['database', 'master', 'vhost'].indexOf(tokens[2]) < 0) {
+
+                    printUsage();
+                    break;
+                }
 
                 libs.config.genConfig(tokens[2], tokens[3], $setting => {
 
@@ -203,6 +211,10 @@ me.on('line', function ($line) {
 
                     me.writeError($e);
                 });
+            }
+            else {
+
+                printUsage();
             }
 
             break;
