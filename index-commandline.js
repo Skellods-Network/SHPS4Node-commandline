@@ -1,6 +1,7 @@
 'use strict';
 
 var color = require('colors');
+var defer = require('promise-defer')
 var modLoad = require('node-mod-load');
 var libs = modLoad.libs;
 var q = require('q');
@@ -144,6 +145,64 @@ me.on('line', function ($line) {
 
                     me.write('Usage:\n reload <what>\n\nThings to reload:\n - config');
                 }
+            }
+
+            break;
+        }
+
+        case 'config': {
+
+            if (tokens[1] === 'gen') {
+
+                libs.config.genConfig(tokens[2], tokens[3], $setting => {
+
+                    if ($setting.status === 'deprecated') {
+
+                        return $setting.default;
+                    }
+
+                    me.write(`\n${$setting.group}->${$setting.key} (${$setting.type})`.bold);
+                    me.write($setting.description);
+                    if (Array.isArray($setting.examples)) {
+
+                        me.write('EXAMPLES:')
+
+                        var i = 0;
+                        var l = $setting.examples.length;
+                        while (i < l) {
+
+                            me.write('\t- ' + $setting.examples[i]);
+                            i++;
+                        }
+                    }
+
+                    var d = defer();
+                    nat.getInterface().question('[Default: ' + $setting.default + ']? ', $in => {
+
+                        //TODO: First check if input is ok and sanitize it, then convert it
+                        var input = $in;
+                        if (input === '') {
+
+                            input = $setting.default;
+                        }
+
+                        switch ($setting.type) {
+
+                            case 'number': input = Number(input) || 0; break;
+                            case 'boolean': input = Boolean(input); break;
+                        }
+
+                        d.resolve(input);
+                    });
+
+                    return d.promise;
+                }).then($file => {
+
+                    me.write('\nConfig written to ' + $file);
+                }, $e => {
+
+                    me.writeError($e);
+                });
             }
 
             break;
