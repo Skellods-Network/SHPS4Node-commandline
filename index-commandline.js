@@ -1,6 +1,9 @@
 'use strict';
 
+var path = require('path');
+
 var color = require('colors');
+var cp = require('cp');
 var defer = require('promise-defer')
 var modLoad = require('node-mod-load');
 var libs = modLoad.libs;
@@ -11,13 +14,14 @@ module.exports = new nat();
 var me = module.exports;
 
 var sb = null;
+var internalRS = null;
 
 var originalInit = module.exports.__proto__.init;
 module.exports.__proto__.init = function () {
     
     if (arguments.length == 0) {
 
-        var internalRS = new libs.helper.requestState();
+        internalRS = new libs.helper.requestState();
         internalRS.request = {
 
             headers: {},
@@ -53,7 +57,7 @@ var _writeWelcome
     libs.main.printVersion();
 };
 
-me.on('line', function ($line) {
+me.on('line', function f_commandline__on_line($line) {
 
     $line = $line.trim();
     var tokens = $line.split(' ');
@@ -169,8 +173,32 @@ me.on('line', function ($line) {
                         return $setting.default;
                     }
 
-                    me.write(`\n${$setting.group}->${$setting.key} (${$setting.type})`.bold);
+                    var confPath;
+                    if ($setting.key) {
+
+                        confPath = $setting.group + '->' + $setting.key;
+                    }
+                    else {
+
+                        confPath = $setting.group;
+                    }
+
+                    me.write(`\n${confPath} (${$setting.type})`.bold);
                     me.write($setting.description);
+                    if ($setting.options) {
+
+                        me.write('OPTIONS:')
+
+                        var i = 0;
+                        var keys = Object.keys($setting.options);
+                        var l = keys.length;
+                        while (i < l) {
+
+                            me.write(`\t${keys[i]}=${$setting.options[keys[i]]}`);
+                            i++;
+                        }
+                    }
+
                     if (Array.isArray($setting.examples)) {
 
                         me.write('EXAMPLES:')
@@ -207,6 +235,74 @@ me.on('line', function ($line) {
                 }).then($file => {
 
                     me.write('\nConfig written to ' + $file);
+                }, $e => {
+
+                    me.writeError($e);
+                });
+            }
+            else {
+
+                printUsage();
+            }
+
+            break;
+        }
+
+        case 'use': {
+
+            //TODO: check and sanitize alias name!
+
+            // Check if the given URL even exists!
+            const dbConf = libs.config.getDBConfig(tokens[1]);
+            if (!dbConf) {
+
+                me.writeError(
+                    'The given URL does not exist or does not have any attached DB configurations!\n' +
+                    'Please first create a new DB config with `> config gen database`.'
+                );
+
+                return;
+            }
+
+            internalRS._domain = new libs.helper.SHPS_domain(tokens[1]);
+            if (!internalRS.config) {
+
+                internalRS.config = {};
+            }
+
+            internalRS.config.databaseConfig = dbConf;
+            internalRS.config.generalConfig = libs.config.getVHostConfig(tokens[1]);
+
+            me.prompt(true);
+
+            break;
+        }
+
+        case 'db': {
+
+            var printUsage = me.write.bind(this, 'Usage: db init <type>\n\nWith type:\n - mssql\n - mysql\n - sqlite');
+            if (tokens[1] === 'init') {
+
+                // tokens[2] should contain the name of the alias!
+                //TODO: check and sanitize alias name!
+
+                // Check if the use command has been issued before this call
+                if (!internalRS.config) {
+
+                    me.writeError('You first have to use `> use` in order to select an existing configuration!');
+                    return;
+                }
+
+                libs.sql.newSQL(tokens[2], internalRS).done($sql => {
+
+                    $sql.initDB('database-struc').then(() => {
+
+                        me.prompt(true);
+                    }, $err => {
+
+                        me.writeError($err);
+                    });
+
                 }, $e => {
 
                     me.writeError($e);
