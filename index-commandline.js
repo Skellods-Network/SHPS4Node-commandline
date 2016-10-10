@@ -3,7 +3,6 @@
 var path = require('path');
 
 var color = require('colors');
-var cp = require('cp');
 var defer = require('promise-defer')
 var modLoad = require('node-mod-load');
 var libs = modLoad.libs;
