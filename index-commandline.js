@@ -223,8 +223,22 @@ me.on('line', function f_commandline__on_line($line) {
 
                         switch ($setting.type) {
 
-                            case 'number': input = Number(input) || 0; break;
-                            case 'boolean': input = Boolean(input); break;
+                            case 'integer':
+                            case 'number': input = parseInt(input, 10) || 0; break;
+                            case 'boolean': input = (() => {
+
+                                if (!Boolean(input)) {
+
+                                    return Boolean(input);
+                                }
+
+                                if (/^\s*no?|false\s*$/i.test(input)) {
+
+                                    return false;
+                                }
+
+                                return !!input;
+                            })(); break;
                         }
 
                         d.resolve(input);
@@ -264,13 +278,11 @@ me.on('line', function f_commandline__on_line($line) {
             }
 
             internalRS._domain = new libs.helper.SHPS_domain(tokens[1]);
-            if (!internalRS.config) {
 
-                internalRS.config = {};
-            }
+            internalRS.config = Object.assign({
 
-            internalRS.config.databaseConfig = dbConf;
-            internalRS.config.generalConfig = libs.config.getVHostConfig(tokens[1]);
+                databaseConfig: dbConf,
+            }, libs.config.getVHostConfig(tokens[1]));
 
             me.prompt(true);
 
