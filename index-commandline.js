@@ -17,23 +17,23 @@ var internalRS = null;
 
 var originalInit = module.exports.__proto__.init;
 module.exports.__proto__.init = function () {
-    
+
+    internalRS = new libs.helper.requestState();
+    internalRS.request = {
+
+        headers: {},
+        connection: { remoteAddress: 'localhost' },
+    };
+
+    internalRS.COOKIE = libs.cookie.newCookieJar(internalRS);
+    internalRS.config = null;
+    internalRS._domain = new libs.helper.SHPS_domain('localhost');
+    internalRS.dummy = true;
+    sb = libs.sandbox.newSandbox(internalRS);
+    sb.addFeature.allBase();
+
     if (arguments.length == 0) {
-
-        internalRS = new libs.helper.requestState();
-        internalRS.request = {
-
-            headers: {},
-            connection: { remoteAddress: 'localhost' },
-        };
-
-        internalRS.COOKIE = libs.cookie.newCookieJar(internalRS);
-        internalRS.config = null;
-        internalRS._domain = new libs.helper.SHPS_domain('localhost');
-        internalRS.dummy = true;
-        sb = libs.sandbox.newSandbox(internalRS);
-        sb.addFeature.allBase();
-
+        
         return q.Promise($res => {
 
             $res();
