@@ -1,27 +1,30 @@
 'use strict';
 
-require('colors');
+const chalk = require('chalk');
 const nml = require('node-mod-load');
-const tk = require('terminal-kit').terminal;
+const VError = require('verror').VError;
 
-const singleton = require('./singleton.c');
 
+let initialized = false;
 
 require('../interface/coml.h').prototype._init = function() {
-
-    if (typeof singleton.instance !== 'undefined') {
-
-        throw 'Cannot re-initialize module Commandline!';
+    if (initialized) {
+        throw new VError({
+            name: 'Already initialized!',
+            cause: new Error('Cannot re-initialize module Commandline!'),
+            info: {
+                errno: 'EALREADYINITIALIZED',
+            },
+        });
     }
 
-    singleton.instance = this;
+    initialized = true;
 
     this._history = [];
-
     this.write(
         '\n ' +
-        'WELCOME to a world of no worries.'.underline.green.bold + '\n ' +
-        'WELCOME to SHPS!'.underline.green.bold + '\n'
+        chalk.green.bold.underline('WELCOME to a world of no worries.') + '\n ' +
+        chalk.green.bold.underline('WELCOME to SHPS!') + '\n'
     );
 
     nml('SHPS4Node').libs.main.printVersion();
