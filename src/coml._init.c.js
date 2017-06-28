@@ -21,13 +21,4 @@ require('../interface/coml.h').prototype._init = function() {
     initialized = true;
 
     this._history = [];
-    this.write(
-        '\n ' +
-        chalk.green.bold.underline('WELCOME to a world of no worries.') + '\n ' +
-        chalk.green.bold.underline('WELCOME to SHPS!') + '\n'
-    );
-
-    nml('SHPS4Node').libs.main.printVersion();
-
-    this.prompt();
 };
