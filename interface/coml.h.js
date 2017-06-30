@@ -15,8 +15,7 @@ module.exports = class Commandline {
     write($str) { throw 'Not implemented: Commandline.write()!'; };
 
     /**
-     * Write a string to the terminal.
-     * If the string does not end with a new-line, "\n" is appended
+     * Write a string to the terminal and append a new-line
      *
      * @param {string} $str
      */
