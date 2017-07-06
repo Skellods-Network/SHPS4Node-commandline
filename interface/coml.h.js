@@ -1,11 +1,6 @@
 'use strict';
 
-const mix = require('mics').mix;
-const nml = require('node-mod-load');
-
-const mixins = nml('SHPS4Node').libs._mixins;
-
-module.exports = mix(mixins.base, mixins.init, superclass => class Commandline extends superclass {
+module.exports = superclass => class Commandline extends superclass {
 
     constructor() { super(); this._init(); };
 
@@ -24,4 +19,4 @@ module.exports = mix(mixins.base, mixins.init, superclass => class Commandline e
      * @param {string} $str
      */
     writeLn($str) { throw 'Not implemented: Commandline.writeLn()!'; }
-});
+};
