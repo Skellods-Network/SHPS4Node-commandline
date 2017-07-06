@@ -1,9 +1,13 @@
 'use strict';
 
+const mix = require('mics').mix;
+const nml = require('node-mod-load');
 
-module.exports = class Commandline {
+const mixins = nml('SHPS4Node')._mixins;
 
-    constructor() { this._init(); };
+module.exports = mix(mixins.base, mixins.init, superclass => class Commandline extends superclass {
+
+    constructor() { super(); this._init(); };
 
     static init() { throw new Error('Not implemented: Commandline.init()!'); };
 
