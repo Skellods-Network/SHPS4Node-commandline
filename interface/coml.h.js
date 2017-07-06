@@ -24,4 +24,4 @@ module.exports = mix(mixins.base, mixins.init, superclass => class Commandline e
      * @param {string} $str
      */
     writeLn($str) { throw 'Not implemented: Commandline.writeLn()!'; }
-};
+});
