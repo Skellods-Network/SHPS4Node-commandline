@@ -1,9 +1,8 @@
 'use strict';
 
 const tk = require('terminal-kit').terminal;
+const Class = Object.getPrototypeOf(require('../interface/coml.h'));
 
-
-require('../interface/coml.h').prototype.write = function($str) {
-
+Class.write = function($str) {
     tk($str);
 };

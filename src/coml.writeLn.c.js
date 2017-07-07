@@ -1,5 +1,7 @@
 'use strict';
 
-require('../interface/coml.h').prototype.writeLn = function($str) {
+const Class = Object.getPrototypeOf(require('../interface/coml.h'));
+
+Class.writeLn = function($str) {
     this.write($str + '\n');
 };
