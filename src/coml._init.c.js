@@ -1,13 +1,14 @@
 'use strict';
 
 const chalk = require('chalk');
+const Class = Object.getPrototypeOf(require('../interface/coml.h'));
 const nml = require('node-mod-load');
 const VError = require('verror').VError;
 
 
 let initialized = false;
 
-require('../interface/coml.h').prototype._init = function() {
+Class._init = function() {
     if (initialized) {
         throw new VError({
             name: 'Already initialized!',
