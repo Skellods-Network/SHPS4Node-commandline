@@ -11,4 +11,4 @@ const nmlComl = nml('SHPS4Node-commandline');
 nmlComl.addDir(__dirname + path.sep + 'interface', true);
 nmlComl.addDir(__dirname + path.sep + 'src', true);
 
-module.exports = mix(mixins.base, mixins.init, nmlComl.libs['coml.h']);
+module.exports = mix(nmlComl.libs['coml.h'], mixins.base, mixins.init);
