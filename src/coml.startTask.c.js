@@ -12,7 +12,7 @@ meth.startTask = function($name) {
     const self = this;
     const state = this[libs['coml-sym.h'].state];
 
-    this.write(chalk.bold(`\n${$name}...`), mark);
+    this.writeLn(chalk.bold(`\n${$name}...`), mark);
     return {
         _startTime: process.hrtime()[1],
 
@@ -35,7 +35,7 @@ meth.startTask = function($name) {
                 i++;
             }
 
-            self.write($name + ': ' + time + 'ms' + space + '[ ' + $result + ' ]', mark + '_end');
+            self.writeLn($name + ': ' + time + 'ms' + space + '[ ' + $result + ' ]', mark + '_end');
         },
 
         interim: function f_commandline_newTask_interim($result, $message) {
@@ -68,11 +68,11 @@ meth.startTask = function($name) {
             }
 
             if (state.currentMark !== mark) {
-                self.write(chalk.cyan.bold('┌') + $name, mark);
-                self.write(chalk.cyan.bold('└┤') + ' ' + star + ' ' + $message, mark);
+                self.writeLn(chalk.cyan.bold('┌') + $name, mark);
+                self.writeLn(chalk.cyan.bold('└┤') + ' ' + star + ' ' + $message, mark);
             }
             else {
-                self.write(chalk.cyan.bold(' │') + ' ' + star + ' ' + $message, mark);
+                self.writeLn(chalk.cyan.bold(' │') + ' ' + star + ' ' + $message, mark);
             }
         },
     };
