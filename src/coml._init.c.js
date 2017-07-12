@@ -1,14 +1,11 @@
 'use strict';
 
-const chalk = require('chalk');
-const Class = Object.getPrototypeOf(require('../interface/coml.h'));
-const nml = require('node-mod-load');
+const meth = require('node-mod-load')('SHPS4Node-commandline').libs.meth;
 const VError = require('verror').VError;
-
 
 let initialized = false;
 
-Class._init = function() {
+meth._init = function() {
     if (initialized) {
         throw new VError({
             name: 'Already initialized!',
@@ -22,4 +19,6 @@ Class._init = function() {
     initialized = true;
 
     this._history = [];
+
+    Object.assign(this, meth);
 };

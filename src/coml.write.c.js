@@ -1,8 +1,8 @@
 'use strict';
 
 const tk = require('terminal-kit').terminal;
-const Class = Object.getPrototypeOf(require('../interface/coml.h'));
+const meth = require('node-mod-load')('SHPS4Node-commandline').libs.meth;
 
-Class.write = function($str) {
+meth.write = function($str) {
     tk($str);
 };

@@ -1,10 +1,8 @@
 'use strict';
 
+const libs = require('node-mod-load')('SHPS4Node-commandline').libs;
 const Result = require('rustify-js').Result;
 
-const h = require('../interface/coml.h');
-
-
-h.init = function() {
-    return Result.fromSuccess(new h());
+libs.meth.init = function() {
+    return Result.fromSuccess(new (libs['coml.h'])());
 };

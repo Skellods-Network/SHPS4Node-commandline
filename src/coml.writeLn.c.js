@@ -1,7 +1,7 @@
 'use strict';
 
-const Class = Object.getPrototypeOf(require('../interface/coml.h'));
+const meth = require('node-mod-load')('SHPS4Node-commandline').libs.meth;
 
-Class.writeLn = function($str) {
+meth.writeLn = function($str) {
     this.write($str + '\n');
 };

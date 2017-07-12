@@ -2,13 +2,10 @@
 
 const path = require('path');
 
-const mix = require('mics').mix;
-const nml = require('node-mod-load');
+const nmlComl = require('node-mod-load')('SHPS4Node-commandline');
 
-const mixins = nml('SHPS4Node').libs._mixins;
-const nmlComl = nml('SHPS4Node-commandline');
-
+nmlComl.addMeta('meth', {});
 nmlComl.addDir(__dirname + path.sep + 'interface', true);
 nmlComl.addDir(__dirname + path.sep + 'src', true);
 
-module.exports = mix(nmlComl.libs['coml.h'], mixins.base, mixins.init);
+module.exports = nmlComl.libs['coml.h'];
