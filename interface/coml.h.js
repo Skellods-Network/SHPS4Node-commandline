@@ -6,9 +6,9 @@ const nml = require('node-mod-load');
 const meth = nml('SHPS4Node-commandline').libs.meth;
 const mixins = nml('SHPS4Node').libs.main.mixins;
 
-module.exports = mix(mixins.mixBase, mixins.mixInit, superclass => class Commandline extends superclass {
+module.exports = mix(mixins.base, mixins.init, superclass => class Commandline extends superclass {
 
-    constructor() { super(); meth._init(); };
+    constructor() { super(); meth._init.call(this); };
 
     static init() { return meth.init(); };
 
