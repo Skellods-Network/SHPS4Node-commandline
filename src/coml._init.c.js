@@ -1,8 +1,10 @@
 'use strict';
 
-const meth = require('node-mod-load')('SHPS4Node-commandline').libs.meth;
+const libs = require('node-mod-load')('SHPS4Node-commandline').libs;
+const Option = require('rustify-js').Option;
 const VError = require('verror').VError;
 
+const meth = libs.meth;
 let initialized = false;
 
 meth._init = function() {
@@ -18,7 +20,12 @@ meth._init = function() {
 
     initialized = true;
 
-    this._history = [];
+    this[libs['coml-sym.h'].state] = {
+        history: [],
+        interface: Option.fromNone(),
+        mode: 0,
+        prompt: '> ',
+    };
 
     Object.assign(this, meth);
 };
