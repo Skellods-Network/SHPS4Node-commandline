@@ -18,7 +18,7 @@ meth.startInputMode = function($prompt) {
         output: process.stdout,
     });
 
-    state.interface.on('line', this.executeLine);
+    state.interface.on('line', this.executeLine.bind(this));
     state.interface.setPrompt(state.prompt);
     state.mode = 1;
 

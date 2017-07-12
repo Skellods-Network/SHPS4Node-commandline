@@ -31,7 +31,7 @@ commands.version = function() {
     const v = process.versions;
     for (let lib in v) {
         if (v.hasOwnProperty(lib) && typeof v[lib] === 'string') {
-            this.writeLn(` INT: ${v[lib]}`);
+            this.writeLn(` INT: ${lib} - ${v[lib]}`);
         }
     }
 
