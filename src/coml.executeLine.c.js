@@ -92,15 +92,14 @@ commands.version = function() {
         }
 
         if (vSHPS.hasOwnProperty(lib) && typeof vSHPS[lib] === 'string') {
-            this.writeLn(` SYS: ${lib} - ${vSHPS[lib] || 'unknown'}`);
+            this.writeLn(` SYS: ${lib} - ${vSHPS[lib] === 'undefined' ? 'unknown' : vSHPS[lib]}`);
         }
     }
 
-    // todo: write versions of plugins
-    const vPlugins = {};
+    const vPlugins = nml('SHPS4Node-plugins').versions || {};
     for (let lib in vPlugins) {
         if (vPlugins.hasOwnProperty(lib) && typeof vPlugins[lib] === 'string') {
-            this.writeLn(` PLG: ${lib} - ${vPlugins[lib] || 'unknown'}`);
+            this.writeLn(` PLG: ${lib} - ${vPlugins[lib] === 'undefined' ? 'unknown' : vSHPS[lib]}`);
         }
     }
 };
