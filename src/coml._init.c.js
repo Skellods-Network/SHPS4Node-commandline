@@ -26,6 +26,7 @@ meth._init = function() {
         interface: Option.fromNone(),
         mode: 0,
         prompt: '> ',
+        currentMark: undefined,
     };
 
     Object.assign(this, meth);

@@ -28,6 +28,8 @@ module.exports = mix(mixins.base, mixins.init, superclass => class Commandline e
      */
     startInputMode($prompt) { throw new Error('Not implemented: Commandline.writeLn()!'); }
 
+    startTask($name) { throw new Error('Not implemented: Commandline.startTask()!'); }
+
     /**
      * Write a string to the SHPS terminal
      *

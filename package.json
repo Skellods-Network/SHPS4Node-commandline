@@ -10,6 +10,7 @@
     "chalk": "^1.1.3",
     "verror": "^1.10.0",
     "rustify-js": "^0.1.1",
-    "mics": "^0.6.3"
+    "mics": "^0.6.3",
+    "randomstring": "^1.1.5"
   }
 }
