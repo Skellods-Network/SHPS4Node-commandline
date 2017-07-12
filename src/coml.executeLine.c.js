@@ -85,7 +85,7 @@ commands.version = function() {
         }
     }
 
-    const vSHPS = nml('SHPS4Node').versions;
+    const vSHPS = nml('SHPS4Node').versions || {};
     for (let lib in vSHPS) {
         if (vSHPS.hasOwnProperty(lib) && typeof vSHPS[lib] === 'string') {
             this.writeLn(` SYS: ${lib} - ${vSHPS[lib]}`);
