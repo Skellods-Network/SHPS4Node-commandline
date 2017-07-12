@@ -2,10 +2,11 @@
 
 const readline = require('readline');
 
-const libs = require('node-mod-load')('SHPS4Node-commandline').libs;
+const nml = require('node-mod-load');
 const tk = require('terminal-kit').terminal;
 
 const commands = {};
+const libs = nml('SHPS4Node-commandline').libs;
 const meth = libs.meth;
 
 meth.executeLine = function($line) {
@@ -53,23 +54,23 @@ commands.help = function() {
 
     this.writeLn(`
   Usage: command [options...]
-  
+
   The SHPS CLI supports the following core commands:
-  
+
   clear | cls | clr
   ------------------------
   Empty screen
-  
+
   help
   ------------------------
   Display this help text
-  
+
   version
   ------------------------
   Display version information about internal NodeJS dependencies,
   SHPS modules and plugins
-  
-  
+
+
   Additionally, the following commands are registered at the moment:
 
 ${coms}
@@ -84,5 +85,18 @@ commands.version = function() {
         }
     }
 
-    // todo: write versions of SHPS modules and plugins
+    const vSHPS = nml('SHPS4Node').versions;
+    for (let lib in vSHPS) {
+        if (vSHPS.hasOwnProperty(lib) && typeof vSHPS[lib] === 'string') {
+            this.writeLn(` SYS: ${lib} - ${vSHPS[lib]}`);
+        }
+    }
+
+    // todo: write versions of plugins
+    const vPlugins = {};
+    for (let lib in vPlugins) {
+        if (vPlugins.hasOwnProperty(lib) && typeof vPlugins[lib] === 'string') {
+            this.writeLn(` PLG: ${lib} - ${vPlugins[lib]}`);
+        }
+    }
 };
