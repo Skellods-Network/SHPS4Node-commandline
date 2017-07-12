@@ -20,6 +20,7 @@ meth._init = function() {
 
     initialized = true;
 
+    this[libs['coml-sym.h'].registeredCommands] = new Map();
     this[libs['coml-sym.h'].state] = {
         history: [],
         interface: Option.fromNone(),

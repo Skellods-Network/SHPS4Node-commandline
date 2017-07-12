@@ -19,6 +19,8 @@ module.exports = mix(mixins.base, mixins.init, superclass => class Commandline e
      */
     executeLine($line) { throw new Error('Not implemented: Commandline.executeLine()!'); }
 
+    registerCommand($name, $usage, $description, $callback) { throw new Error('Not implemented: Commandline.registerCommand()!'); }
+
     /**
      * Change commandline from output-only mode to in/out mode
      *

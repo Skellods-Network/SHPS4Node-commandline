@@ -9,6 +9,7 @@ const commands = {};
 const meth = libs.meth;
 
 meth.executeLine = function($line) {
+    const regComms = this[libs['coml-sym.h'].registeredCommands];
     const line = $line.trim();
     const state = this[libs['coml-sym.h'].state];
 
@@ -18,11 +19,14 @@ meth.executeLine = function($line) {
     }
 
     const tokens = line.split(' ');
+    const args = tokens.slice(1).unshift(state);
     if (commands[tokens[0]]) {
-        commands[tokens[0]].apply(this, tokens.slice(1).unshift(state));
+        commands[tokens[0]].apply(this, args);
+    }
+    else if (regComms.has(tokens[0])) {
+        regComms.get(tokens[0]).callback.apply(undefined, args);
     }
     else {
-        // todo: first propagate the command to all SHPS modules, then to all plugins
         this.writeLn(`There is no command "${tokens[0]}"`);
     }
 
@@ -35,13 +39,16 @@ commands.clear = commands.cls = commands.clr = function($state) {
     $state.interface.prompt(true);
 };
 
-commands.exit = function() {
-    // todo: this should be in main
-    process.exit();
-};
-
 commands.help = function() {
-    // todo: collect command information from other modules
+    let coms = '';
+    this[libs['coml-sym.h'].registeredCommands].forEach($com => {
+        coms +=
+            '  ' + $com.usage +
+            '  ------------------------' +
+            ($com.description.match(/[\s\S]{1,80}/g) || []).reduce(($acc, $l) => `${$acc}\n  ${$l}`, '')
+        ;
+    });
+
     this.writeLn(`
   Usage: command [options...]
   
@@ -50,10 +57,6 @@ commands.help = function() {
   clear | cls | clr
   ------------------------
   Empty screen
-  
-  exit
-  ------------------------
-  Shutdown SHPS
   
   help
   ------------------------
@@ -64,8 +67,10 @@ commands.help = function() {
   Display version information about internal NodeJS dependencies,
   SHPS modules and plugins
   
-  There are additional commands to control the DB, pipelines, etc.
-  Please refer to the manual to find out more about them
+  
+  Additionally, the following commands are registered at the moment:
+
+${coms}
 `);
 };
 

@@ -2,4 +2,5 @@
 
 module.exports = {
     state: Symbol(),
+    registeredCommands: Symbol(),
 };
