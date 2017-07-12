@@ -19,7 +19,9 @@ meth.executeLine = function($line) {
     }
 
     const tokens = line.split(' ');
-    const args = tokens.slice(1).unshift(state);
+    const args = tokens.slice(1);
+
+    args.unshift(state);
     if (commands[tokens[0]]) {
         commands[tokens[0]].apply(this, args);
     }
@@ -43,7 +45,7 @@ commands.help = function() {
     let coms = '';
     this[libs['coml-sym.h'].registeredCommands].forEach($com => {
         coms +=
-            '  ' + $com.usage +
+            `  ${$com.usage}\n` +
             '  ------------------------' +
             ($com.description.match(/[\s\S]{1,80}/g) || []).reduce(($acc, $l) => `${$acc}\n  ${$l}`, '')
         ;
