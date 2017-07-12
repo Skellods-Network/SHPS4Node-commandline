@@ -87,8 +87,12 @@ commands.version = function() {
 
     const vSHPS = nml('SHPS4Node').versions || {};
     for (let lib in vSHPS) {
+        if (['main'].includes(lib) || lib.startsWith('_')) {
+            continue;
+        }
+
         if (vSHPS.hasOwnProperty(lib) && typeof vSHPS[lib] === 'string') {
-            this.writeLn(` SYS: ${lib} - ${vSHPS[lib]}`);
+            this.writeLn(` SYS: ${lib} - ${vSHPS[lib] || 'unknown'}`);
         }
     }
 
@@ -96,7 +100,7 @@ commands.version = function() {
     const vPlugins = {};
     for (let lib in vPlugins) {
         if (vPlugins.hasOwnProperty(lib) && typeof vPlugins[lib] === 'string') {
-            this.writeLn(` PLG: ${lib} - ${vPlugins[lib]}`);
+            this.writeLn(` PLG: ${lib} - ${vPlugins[lib] || 'unknown'}`);
         }
     }
 };
