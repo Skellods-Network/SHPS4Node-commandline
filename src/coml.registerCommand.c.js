@@ -23,7 +23,7 @@ meth.registerCommand = function($name, $usage, $description, $callback) {
         })
     }
 
-    commands.set($namem, {
+    commands.set($name, {
         usage: $usage,
         description: $description,
         callback: $callback,
