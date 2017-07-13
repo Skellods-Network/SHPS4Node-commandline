@@ -37,10 +37,14 @@ module.exports = mix(mixins.base, mixins.init, superclass => class Commandline e
      */
     write($str) { throw new Error('Not implemented: Commandline.write()!'); }
 
+    writeError($str) { throw new Error('Not implemented: Commandline.writeError()!'); }
+
     /**
      * Write a string to the terminal and append a new-line
      *
      * @param {string} $str
      */
     writeLn($str) { throw new Error('Not implemented: Commandline.writeLn()!'); }
+
+    writeWarning($str) { throw new Error('Not implemented: Commandline.writeWarning()!'); }
 });

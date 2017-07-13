@@ -1,5 +1,6 @@
 'use strict';
 
+const chalk = require('chalk');
 const tk = require('terminal-kit').terminal;
 const libs = require('node-mod-load')('SHPS4Node-commandline').libs;
 
@@ -10,12 +11,29 @@ meth.write = function($str, $mark) {
 
     state.currentMark = $mark;
     if (state.mode === 0) {
-        tk($str);
+        tk($str.toString());
         return;
     }
 
     tk.eraseLine();
     tk.column(0);
-    tk($str);
+    tk($str.toString());
     state.interface.prompt(true);
+};
+
+meth.writeError = function($str, $mark) {
+    const line = ($str instanceof Error || $str.toString().startsWith('Error:'))
+        ? $str.toString()
+        : 'Error: ' + $str
+    ;
+
+    this.writeLn(chalk.yellow.bold(line), $mark);
+};
+
+meth.writeLn = function($str, $mark) {
+    this.write($str + '\n', $mark);
+};
+
+meth.writeWarning = function($str, $mark) {
+    this.writeLn(chalk.yellow.bold(`Warning: ${$str}`), $mark);
 };
